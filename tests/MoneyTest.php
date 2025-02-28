@@ -101,6 +101,14 @@ class MoneyTest extends TestCase
         );
     }
 
+    public function testObjectCanBeConstructedFromStringValueWithComma()
+    {
+        $this->assertEquals(
+            new Money(1234, new Currency('EUR')),
+            Money::fromString('12,34', 'EUR')
+        );
+    }
+
     /**
      * @covers  \SebastianBergmann\Money\Money::getAmount
      * @depends testObjectCanBeConstructedForValidConstructorArguments
