@@ -80,23 +80,34 @@ class Money implements \JsonSerializable
             throw new InvalidArgumentException('$value must be a string');
         }
 
+        $value = self::convertToIntOrFloat($value);
+
         $currency = self::handleCurrencyArgument($currency);
 
         return new static(
-            intval(
+            (int)round(
+                $currency->getSubUnit() *
                 round(
-                    $currency->getSubUnit() *
-                    round(
-                        $value,
-                        $currency->getDefaultFractionDigits(),
-                        PHP_ROUND_HALF_UP
-                    ),
-                    0,
-                    PHP_ROUND_HALF_UP
+                    $value,
+                    $currency->getDefaultFractionDigits()
                 )
             ),
             $currency
         );
+    }
+
+    private static function convertToIntOrFloat(string $value)
+    {
+        $value = str_replace(['.', ','], ['', '.'], $value);
+
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException('$value is not a numerical string');
+        }
+        if (strpos($value, '.') !== false) {
+            return (float)$value;
+        }
+
+        return (int)$value;
     }
 
     /**
