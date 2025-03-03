@@ -99,6 +99,7 @@ class Money implements \JsonSerializable
     private static function convertToIntOrFloat(string $value)
     {
         $value = str_replace(',', '.', $value);
+        $value = $value === '' ? 0 : $value;
 
         if (!is_numeric($value)) {
             throw new InvalidArgumentException('$value is not a numerical string');
