@@ -111,13 +111,7 @@ class Money implements \JsonSerializable
         return (int)$value;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     *
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * @link   http://php.net/manual/en/jsonserializable.jsonserialize.php
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'amount'   => $this->amount,
